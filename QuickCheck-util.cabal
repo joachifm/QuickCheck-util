@@ -1,0 +1,37 @@
+name: QuickCheck-util
+synopsis: QuickCheck utilities
+description:
+     A collection of small, composable utilities for writing and using
+     QuickCheck properties.
+     .
+     The library favours functions over data, and does not
+     add any orphan instances.
+version: 0.0.0.0
+stability: alpha
+homepage: http://github.com/joachifm/QuickCheck-util
+bug-reports: http://github.com/joachifm/QuickCheck-util/issues
+maintainer: Joachim Fasting <joachim.fasting@gmail.com>
+category: Testing
+
+author: Joachim Fasting
+copyright: (C) 2010 Joachim Fasting
+license: BSD3
+license-file: COPYING
+
+cabal-version: >= 1.2
+build-type: Simple
+
+extra-source-files: ChangeLog NEWS README.markdown
+
+source-repository head
+    type: git
+    location: git://github.com/joachifm/QuickCheck-util.git
+
+library
+    exposed-modules:
+        Test.QuickCheck.Util
+
+    build-depends:
+        base >= 4.1 && < 5,
+        random >= 1 && < 2,
+        QuickCheck >= 2.1 && < 3
