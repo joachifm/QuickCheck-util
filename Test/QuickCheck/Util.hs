@@ -65,15 +65,6 @@ possibly :: Gen a -> Gen (Maybe a)
 possibly m = arbitrary >>= bool (Just <$> m) (return Nothing)
     where bool thenE elseE b = if b then thenE else elseE
 
--- | Create a mapping generator that produces an infinite list of mappings
--- from arbitrary keys to arbitrary values.
---
--- Example:
---
--- @take 5 \<$\> mapping negative (possibly positive)@
-mapping :: (Arbitrary key, Arbitrary value) => Gen key -> Gen value -> Gen [(key, value)]
-mapping km vm = (:) <$> ((,) <$> km <*> vm) <*> mapping km vm
-
 ------------------------------------------------------------------------------
 -- $producers
 ------------------------------------------------------------------------------
