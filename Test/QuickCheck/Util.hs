@@ -74,6 +74,6 @@ positive :: (Arbitrary a, Num a) => Gen a
 positive = abs <$> arbitrary
 
 -- | Produce an arbitrary, negative number.
-negative :: (Arbitrary a, Num a) => Gen a
+negative :: (Arbitrary a, Eq a, Num a) => Gen a
 negative = neg <$> arbitrary
     where neg x = if signum x /= -1 then negate x else x
