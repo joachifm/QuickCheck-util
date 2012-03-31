@@ -11,7 +11,7 @@ module Test.QuickCheck.Util (
     runGenIO, propertyM,
     -- * Combinators
     -- $combinators
-    pair, triple, possibly, mapping,
+    pair, triple, possibly,
     -- * Producing values
     -- $producers
     positive, negative
