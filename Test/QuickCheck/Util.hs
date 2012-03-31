@@ -62,8 +62,7 @@ triple m = (,,) <$> m <*> m <*> m
 --
 -- @possibly $ triple negative@
 possibly :: Gen a -> Gen (Maybe a)
-possibly m = arbitrary >>= bool (Just <$> m) (return Nothing)
-    where bool thenE elseE b = if b then thenE else elseE
+possibly m = QC.oneof [ Just <$> m , pure Nothing ]
 
 ------------------------------------------------------------------------------
 -- $producers
