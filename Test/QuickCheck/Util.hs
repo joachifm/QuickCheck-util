@@ -71,10 +71,9 @@ possibly m = QC.oneof [ Just <$> m , pure Nothing ]
 ------------------------------------------------------------------------------
 
 -- | Produce an arbitrary, positive number.
-positive :: (Arbitrary a, Num a) => Gen a
-positive = abs <$> arbitrary
+positive :: (Arbitrary a, Num a, Ord a) => Gen a
+positive = QC.suchThat arbitrary (> 0)
 
 -- | Produce an arbitrary, negative number.
-negative :: (Arbitrary a, Eq a, Num a) => Gen a
-negative = neg <$> arbitrary
-    where neg x = if signum x /= -1 then negate x else x
+negative :: (Arbitrary a, Ord a, Num a) => Gen a
+negative = QC.suchThat arbitrary (< 0)
