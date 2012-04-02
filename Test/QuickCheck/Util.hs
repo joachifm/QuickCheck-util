@@ -11,7 +11,7 @@ module Test.QuickCheck.Util (
     runGenIO, propertyM,
     -- * Combinators
     -- $combinators
-    pair, triple, possibly,
+    pairOf, tripleOf, possibly,
     -- * Producing values
     -- $producers
     positive, negative
@@ -51,18 +51,18 @@ runGenIO (MkGen m) = uncurry (flip m) . randomR (0, 500) <$> newStdGen
 -----------------------------------------------------------------------------
 
 -- | Create a pair generator.
-pair :: Applicative m => m a -> m (a, a)
-pair m = (,) <$> m <*> m
+pairOf :: Applicative m => m a -> m (a, a)
+pairOf m = (,) <$> m <*> m
 
 -- | Create a triple generator.
-triple :: Applicative m => m a -> m (a, a, a)
-triple m = (,,) <$> m <*> m <*> m
+tripleOf :: Applicative m => m a -> m (a, a, a)
+tripleOf m = (,,) <$> m <*> m <*> m
 
 -- | Turn a value generator into a generator that _might_ generate a value.
 --
 -- Example:
 --
--- @possibly $ triple negative@
+-- @possibly $ tripleOf negative@
 possibly :: Gen a -> Gen (Maybe a)
 possibly m = QC.oneof [ Just <$> m , pure Nothing ]
 
