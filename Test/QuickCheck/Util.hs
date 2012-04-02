@@ -1,7 +1,7 @@
 -- |
 -- Module     : Test.QuickCheck.Util
 --
--- Copyright  : (C) 2010 Joachim Fasting
+-- Copyright  : (C) 2010-2012 Joachim Fasting
 -- License    : BSD-style (see COPYING)
 -- Maintainer : Joachim Fasting <joachim.fasting@gmail.com>
 --
@@ -12,9 +12,8 @@ module Test.QuickCheck.Util (
     module Test.QuickCheck.Util.IO,
     -- * Combinators
     module Test.QuickCheck.Util.Combinator,
-    -- * Producing values
-    -- $producers
-    positive, negative
+    -- * Generators
+    module Test.QuickCheck.Util.Gen
     ) where
 
 -- Notes:
@@ -25,18 +24,4 @@ module Test.QuickCheck.Util (
 
 import Test.QuickCheck.Util.IO
 import Test.QuickCheck.Util.Combinator
-
-import qualified Test.QuickCheck as QC
-import Test.QuickCheck (Arbitrary, Gen)
-
-------------------------------------------------------------------------------
--- $producers
-------------------------------------------------------------------------------
-
--- | Produce an arbitrary, positive number.
-positive :: (Arbitrary a, Num a, Ord a) => Gen a
-positive = QC.suchThat QC.arbitrary (> 0)
-
--- | Produce an arbitrary, negative number.
-negative :: (Arbitrary a, Ord a, Num a) => Gen a
-negative = QC.suchThat QC.arbitrary (< 0)
+import Test.QuickCheck.Util.Gen
