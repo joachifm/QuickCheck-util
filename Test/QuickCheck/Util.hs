@@ -24,8 +24,6 @@ module Test.QuickCheck.Util (
 -- Absolutely no orphan instances
 
 import Control.Applicative
-import Data.Char
-import Control.Monad
 import qualified Test.QuickCheck as QC
 import Test.QuickCheck (Arbitrary(..), Property)
 import Test.QuickCheck.Gen (Gen(..))
