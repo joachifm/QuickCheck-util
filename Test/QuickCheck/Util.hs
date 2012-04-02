@@ -43,6 +43,10 @@ propertyM = monadicIO . run
 -- Example: create a list of 1000 arbitrary positive numbers:
 --
 --    > runGenIO $ vectorOf 1000 positive
+--
+-- Note that this is different from 'sample'' in that it doesn't return
+-- a sample of values but all the values that a _single run_ of the
+-- generator would produce.
 runGenIO :: Gen a -> IO a
 runGenIO (MkGen m) = uncurry (flip m) . randomR (0, 500) <$> newStdGen
 
