@@ -30,7 +30,8 @@ source-repository head
 library
     exposed-modules:
         Test.QuickCheck.Util,
-        Test.QuickCheck.Util.IO
+        Test.QuickCheck.Util.IO,
+        Test.QuickCheck.Util.Combinator
 
     build-depends:
         base >= 4.1 && < 5,

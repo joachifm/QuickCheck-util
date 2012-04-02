@@ -11,8 +11,7 @@ module Test.QuickCheck.Util (
     -- * I/O utilities
     module Test.QuickCheck.Util.IO,
     -- * Combinators
-    -- $combinators
-    pairOf, tripleOf, possibly,
+    module Test.QuickCheck.Util.Combinator,
     -- * Producing values
     -- $producers
     positive, negative
@@ -25,31 +24,10 @@ module Test.QuickCheck.Util (
 -- Absolutely no orphan instances
 
 import Test.QuickCheck.Util.IO
+import Test.QuickCheck.Util.Combinator
 
-import Control.Applicative
 import qualified Test.QuickCheck as QC
-import Test.QuickCheck (Arbitrary(..))
-import Test.QuickCheck.Gen (Gen(..))
-
-------------------------------------------------------------------------------
--- $combinators
------------------------------------------------------------------------------
-
--- | Create a pair generator.
-pairOf :: Applicative m => m a -> m (a, a)
-pairOf m = (,) <$> m <*> m
-
--- | Create a triple generator.
-tripleOf :: Applicative m => m a -> m (a, a, a)
-tripleOf m = (,,) <$> m <*> m <*> m
-
--- | Turn a value generator into a generator that _might_ generate a value.
---
--- Example:
---
--- @possibly $ tripleOf negative@
-possibly :: Gen a -> Gen (Maybe a)
-possibly m = QC.oneof [ Just <$> m , pure Nothing ]
+import Test.QuickCheck (Arbitrary, Gen)
 
 ------------------------------------------------------------------------------
 -- $producers
@@ -57,8 +35,8 @@ possibly m = QC.oneof [ Just <$> m , pure Nothing ]
 
 -- | Produce an arbitrary, positive number.
 positive :: (Arbitrary a, Num a, Ord a) => Gen a
-positive = QC.suchThat arbitrary (> 0)
+positive = QC.suchThat QC.arbitrary (> 0)
 
 -- | Produce an arbitrary, negative number.
 negative :: (Arbitrary a, Ord a, Num a) => Gen a
-negative = QC.suchThat arbitrary (< 0)
+negative = QC.suchThat QC.arbitrary (< 0)
