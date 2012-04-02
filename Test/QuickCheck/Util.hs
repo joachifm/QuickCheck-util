@@ -39,6 +39,10 @@ propertyM = monadicIO . run
 -- | Generate random data.
 --
 -- Can be used for \"fuzzing\" or to inspect the values created by a 'Gen'.
+--
+-- Example: create a list of 1000 arbitrary positive numbers:
+--
+--    > runGenIO $ vectorOf 1000 positive
 runGenIO :: Gen a -> IO a
 runGenIO (MkGen m) = uncurry (flip m) . randomR (0, 500) <$> newStdGen
 
