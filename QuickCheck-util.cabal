@@ -6,7 +6,7 @@ description:
      .
      The library favours functions over data, and does not
      add any orphan instances.
-version: 0.0.0.0
+version: 0.1.0.0
 stability: alpha
 homepage: http://github.com/joachifm/QuickCheck-util
 bug-reports: http://github.com/joachifm/QuickCheck-util/issues
