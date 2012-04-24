@@ -14,7 +14,7 @@ maintainer: Joachim Fasting <joachim.fasting@gmail.com>
 category: Testing
 
 author: Joachim Fasting
-copyright: (C) 2010 Joachim Fasting
+copyright: (C) 2010-2012 Joachim Fasting
 license: BSD3
 license-file: COPYING
 
@@ -29,7 +29,10 @@ source-repository head
 
 library
     exposed-modules:
-        Test.QuickCheck.Util
+        Test.QuickCheck.Util,
+        Test.QuickCheck.Util.IO,
+        Test.QuickCheck.Util.Combinator,
+        Test.QuickCheck.Util.Gen
 
     build-depends:
         base >= 4.1 && < 5,
