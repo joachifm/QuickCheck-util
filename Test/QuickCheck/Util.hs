@@ -11,7 +11,7 @@ module Test.QuickCheck.Util (
     runGenIO, propertyM,
     -- * Combinators
     -- $combinators
-    pair, triple, possibly,
+    pairOf, tripleOf, possibly,
     -- * Producing values
     -- $producers
     positive, negative
@@ -24,8 +24,6 @@ module Test.QuickCheck.Util (
 -- Absolutely no orphan instances
 
 import Control.Applicative
-import Data.Char
-import Control.Monad
 import qualified Test.QuickCheck as QC
 import Test.QuickCheck (Arbitrary(..), Property)
 import Test.QuickCheck.Gen (Gen(..))
@@ -41,6 +39,14 @@ propertyM = monadicIO . run
 -- | Generate random data.
 --
 -- Can be used for \"fuzzing\" or to inspect the values created by a 'Gen'.
+--
+-- Example: create a list of 1000 arbitrary positive numbers:
+--
+--    > runGenIO $ vectorOf 1000 positive
+--
+-- Note that this is different from 'sample'' in that it doesn't return
+-- a sample of values but all the values that a _single run_ of the
+-- generator would produce.
 runGenIO :: Gen a -> IO a
 runGenIO (MkGen m) = uncurry (flip m) . randomR (0, 500) <$> newStdGen
 
@@ -49,31 +55,29 @@ runGenIO (MkGen m) = uncurry (flip m) . randomR (0, 500) <$> newStdGen
 -----------------------------------------------------------------------------
 
 -- | Create a pair generator.
-pair :: Applicative m => m a -> m (a, a)
-pair m = (,) <$> m <*> m
+pairOf :: Applicative m => m a -> m (a, a)
+pairOf m = (,) <$> m <*> m
 
 -- | Create a triple generator.
-triple :: Applicative m => m a -> m (a, a, a)
-triple m = (,,) <$> m <*> m <*> m
+tripleOf :: Applicative m => m a -> m (a, a, a)
+tripleOf m = (,,) <$> m <*> m <*> m
 
 -- | Turn a value generator into a generator that _might_ generate a value.
 --
 -- Example:
 --
--- @possibly $ triple negative@
+-- @possibly $ tripleOf negative@
 possibly :: Gen a -> Gen (Maybe a)
-possibly m = arbitrary >>= bool (Just <$> m) (return Nothing)
-    where bool thenE elseE b = if b then thenE else elseE
+possibly m = QC.oneof [ Just <$> m , pure Nothing ]
 
 ------------------------------------------------------------------------------
 -- $producers
 ------------------------------------------------------------------------------
 
 -- | Produce an arbitrary, positive number.
-positive :: (Arbitrary a, Num a) => Gen a
-positive = abs <$> arbitrary
+positive :: (Arbitrary a, Num a, Ord a) => Gen a
+positive = QC.suchThat arbitrary (> 0)
 
 -- | Produce an arbitrary, negative number.
-negative :: (Arbitrary a, Eq a, Num a) => Gen a
-negative = neg <$> arbitrary
-    where neg x = if signum x /= -1 then negate x else x
+negative :: (Arbitrary a, Ord a, Num a) => Gen a
+negative = QC.suchThat arbitrary (< 0)
